@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+
+  <link rel="manifest" href="/manifest.json">
+
+</head>
+
+<body>
+
+  <script src="/app.js"></script>
+
+  <div>
+
+    <div>
+      <h3>Send data to the server: </h3>
+      <input id="txtSend" type="text" />
+      <button id="btnSend" type="button">send</button>
+    </div>
+
+    <br>
+
+    <div>
+      <h3>Receive data from the server: </label>
+        <p id="lblReceive"></p>
+    </div>
+
+  </div>
+
+  <script>
+
+    btnSend.addEventListener('click', async () => {
+
+      const txtSend = document.getElementById('txtSend');
+      const btnSend = document.getElementById('btnSend');
+      const lblReceive = document.getElementById('lblReceive');
+
+      // Default options are marked with *
+      const response = await fetch('http://localhost:8080/send', {
+        method: 'POST', // *GET, POST, PUT, DELETE, etc.
+        mode: 'cors', // no-cors, *cors, same-origin
+        headers: {
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*'
+          // 'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: JSON.stringify({ test: txtSend.value }) // body data type must match "Content-Type" header
+      });
+
+      return response.json(); // parses JSON response into native JavaScript objects
+
+    })
+
+
+  </script>
+
+</body>
+
+</html>
