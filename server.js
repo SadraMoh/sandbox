@@ -27,19 +27,20 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 
 // static folders
-app.use('/', express.static(path.join(__dirname, '/')))
+app.use('/', express.static(path.join(__dirname, '/public')))
 
+// default page
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, '/index.html'));
+  res.sendFile(path.join(__dirname, 'public' , 'index.html'));
 })
 
+// test post endpoint
 app.post('/send', (req, res) => {
   console.log('[request]', req.body);
   res.json(req.body)
 })
 
 const port = 8080
-
 app.listen(port, (e) => {
   console.log('Server started at http://localhost:' + port)
 })
