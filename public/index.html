@@ -43,10 +43,10 @@
       // Default options are marked with *
       const response = await fetch('http://localhost:8080/send', {
         method: 'POST', // *GET, POST, PUT, DELETE, etc.
-        mode: 'cors', // no-cors, *cors, same-origin
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          'Access-Control-Allow-Origin': '*',
+          'Custom-Inner-Header': "HOLA"
           // 'Content-Type': 'application/x-www-form-urlencoded',
         },
         body: JSON.stringify({ test: txtSend.value }) // body data type must match "Content-Type" header
