@@ -14,9 +14,30 @@ self.addEventListener('activate', (evt) => {
 });
 
 // on fetch
-self.addEventListener('fetch', (evt) => {
+self.addEventListener('fetch', async (evt) => {
 
-  console.log('[sw:fetch]', evt);
-  evt.respondWith(fetch(evt.request));
+  if (evt.request.method !== "POST") return;
+
+  async function modifyRequest() {
+
+    const headers = [...evt.request.headers.entries()].reduceRight((obj, [key, value]) => {
+      obj[key] = value;
+      return obj;
+    }, {})
+
+    headers["X-Custom-Header"] = "Custom Value";
+
+    let body = await evt.request.json();
+    body = { ...body, ...{ customKey: "CustomValue" } };
+
+    const req = new Request(evt.request, { headers: new Headers(headers), body: JSON.stringify(body) });
+
+    console.log('[sw:fetch]', req);
+
+    return fetch(req);
+
+  }
+
+  evt.respondWith(modifyRequest());
 
 });
