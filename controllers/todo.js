@@ -1,6 +1,6 @@
 import express from "express";
 
-export const todoRouter = express.Router();
+const todoRouter = express.Router();
 
 //#region model
 
@@ -41,47 +41,85 @@ const db = [
 
 //#region controllers
 
-todoRouter.get('/', (req, res) => {
-  res.json(db);
-});
+todoRouter.get('/', getAllTodos);
 
-todoRouter.get('/list', (req, res) => {
-  res.json(db);
-});
+todoRouter.get('/list', getAllTodos);
 
-todoRouter.get('/:id', (req, res) => {
+todoRouter.get('/:id', getTodoById);
+
+todoRouter.post('/add', addTodo);
+
+todoRouter.delete('/delete/:id', deleteTodoById);
+
+todoRouter.put('/update/:id', updateTodoById);
+
+//#endregion
+
+//#region services
+
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Request} res 
+ */
+function getAllTodos(req, res) {
+  res.json(db);
+}
+
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Request} res 
+ */
+function getTodoById(req, res) {
   const id = parseInt(req.params.id);
   const todo = db.find(t => t.id === id);
   if (todo)
     res.json(todo);
   else
     res.status(404).json({ error: 'Not found' });
-});
+}
 
-todoRouter.post('/add', (req, res) => {
-  const todo = new Todo(db.length + 1, req.body.title);
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Request} res 
+ */
+function addTodo(req, res) {
+  const todo = new Todo(db.length + 1, req.body.title, req.body.completed, req.body.description);
   db.push(todo);
   res.json(todo);
-});
+}
 
-todoRouter.delete('/delete/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Request} res 
+ */
+function deleteTodoById(req, res) {
+  const id = parseInt(req.params.id);
   const todo = db.find(t => t.id === id);
   if (todo) {
     db.splice(db.indexOf(todo), 1);
+    res.json(todo);
   }
-  res.json(todo);
-});
+  else
+    res.status(404).json({ error: 'Not found' });
+}
 
-todoRouter.put('/update/:id', (req, res) => {
-  const id = parseInt(req.params.id, 10);
+/**
+ * @param {import("express").Request} req 
+ * @param {import("express").Request} res 
+ */
+function updateTodoById(req, res) {
+  const id = parseInt(req.body.id);
   const todo = db.find(t => t.id === id);
   if (todo) {
     todo.title = req.body.title;
     todo.completed = req.body.completed;
     todo.description = req.body.description;
+    res.json({...todo});
   }
-  res.json(todo);
-});
+  else
+    res.status(404).json({ error: 'Not found' });
+}
 
-//#endregion
+//#endregion 
+
+export { todoRouter, db, updateTodoById, deleteTodoById, addTodo, getTodoById, getAllTodos };
