@@ -9,6 +9,8 @@ const fs = require('fs');
 const http = require('http');
 const https = require('https');
 
+const todo = require('./controllers/todo');
+
 // var privateKey = fs.readFileSync('selfsigned.key', 'utf8');
 // var certificate = fs.readFileSync('selfsigned.crt', 'utf8');
 
@@ -25,6 +27,10 @@ app.use(bodyParser.urlencoded({
   extended: true
 }));
 app.use(bodyParser.json());
+
+// ---
+
+app.use('/todo', todo);
 
 // static folders
 app.use('/', express.static(path.join(__dirname, '/public')))
