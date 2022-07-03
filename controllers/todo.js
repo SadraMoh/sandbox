@@ -1,7 +1,6 @@
-const express = require('express');
-const router = express.Router();
+import express from "express";
 
-module.exports = router;
+export const todoRouter = express.Router();
 
 //#region model
 
@@ -42,15 +41,15 @@ const db = [
 
 //#region controllers
 
-router.get('/', (req, res) => {
+todoRouter.get('/', (req, res) => {
   res.json(db);
 });
 
-router.get('/list', (req, res) => {
+todoRouter.get('/list', (req, res) => {
   res.json(db);
 });
 
-router.get('/:id', (req, res) => {
+todoRouter.get('/:id', (req, res) => {
   const id = parseInt(req.params.id);
   const todo = db.find(t => t.id === id);
   if (todo)
@@ -59,13 +58,13 @@ router.get('/:id', (req, res) => {
     res.status(404).json({ error: 'Not found' });
 });
 
-router.post('/add', (req, res) => {
+todoRouter.post('/add', (req, res) => {
   const todo = new Todo(db.length + 1, req.body.title);
   db.push(todo);
   res.json(todo);
 });
 
-router.delete('/delete/:id', (req, res) => {
+todoRouter.delete('/delete/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const todo = db.find(t => t.id === id);
   if (todo) {
@@ -74,7 +73,7 @@ router.delete('/delete/:id', (req, res) => {
   res.json(todo);
 });
 
-router.put('/update/:id', (req, res) => {
+todoRouter.put('/update/:id', (req, res) => {
   const id = parseInt(req.params.id, 10);
   const todo = db.find(t => t.id === id);
   if (todo) {

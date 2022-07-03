@@ -1,15 +1,12 @@
-const express = require('express')
-const app = express()
-const cors = require('cors')
-const bodyParser = require('body-parser');
+import express from 'express';
+import cors from "cors";
+import bodyParser from "body-parser";
+import { fileURLToPath } from 'url';
+import path, { dirname } from "path";
+import { todoRouter } from "./controllers/todo.js";
 
-const path = require('path');
-
-const fs = require('fs');
-const http = require('http');
-const https = require('https');
-
-const todo = require('./controllers/todo');
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // var privateKey = fs.readFileSync('selfsigned.key', 'utf8');
 // var certificate = fs.readFileSync('selfsigned.crt', 'utf8');
@@ -18,6 +15,8 @@ const todo = require('./controllers/todo');
 
 // var httpServer = http.createServer(app);
 // var httpsServer = https.createServer(credentials, app);
+
+const app = express();
 
 // ---
 
@@ -30,7 +29,7 @@ app.use(bodyParser.json());
 
 // ---
 
-app.use('/todo', todo);
+app.use('/todo', todoRouter);
 
 // static folders
 app.use('/', express.static(path.join(__dirname, '/public')))
