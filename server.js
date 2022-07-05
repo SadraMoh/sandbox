@@ -32,7 +32,7 @@ app.use(bodyParser.json());
 app.use('/todo', todoRouter);
 
 // static folders
-app.use('/', express.static(path.join(__dirname, '/public')))
+app.use('/', express.static(path.join(__dirname, '/public'), {  }))
 
 // default page
 app.get('/', (req, res) => {

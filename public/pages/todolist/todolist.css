@@ -1,0 +1,81 @@
+* {
+  margin: 0;
+  padding: 0;
+}
+
+button {
+  cursor: pointer;
+  border: 0;
+  padding: 4px;
+  border-radius: 2px;
+}
+
+.container {
+  display: flex;
+  min-height: 100vh;
+  width: 100vw;
+}
+
+.todolist {
+  margin: auto;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  width: 300px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.todolist ul, .todolist li {
+  padding: 0;
+  margin: 0;
+  list-style-type: none;
+}
+
+.todolist ul li:not(:last-child) {
+  margin-bottom: 8px;
+}
+
+.todo {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  
+}
+
+.todo .checkbox {
+  
+}
+
+.todo .label {
+  
+}
+
+.todo .delete {
+  margin-left: auto;
+  background-color: #ddd;
+  width: 16px;
+  height: 16px;
+  font-size: 8px;
+}
+
+.form {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.form .textbox {
+  flex: 1;
+  padding: 2px 4px;
+}
+
+.form .add {
+  background-color: #ff55ee;
+  color: white;
+}
