@@ -1,4 +1,5 @@
 import express from "express";
+import { randomUUID } from "crypto";
 
 const todoRouter = express.Router();
 
@@ -11,6 +12,10 @@ class Todo {
     this.completed = completed;
     this.description = description;
   }
+
+  static id() {
+    return randomUUID();
+  }
 }
 
 //#endregion
@@ -19,22 +24,22 @@ class Todo {
 
 /** @type {Todo[]} */
 const db = [
-  new Todo(1, 'Learn React', true, 'Learn React'),
-  new Todo(2, 'Learn Node', false, 'Learn Node'),
-  new Todo(3, 'Learn MongoDB', false, 'Learn MongoDB'),
-  new Todo(4, 'Learn GraphQL', false, 'Learn GraphQL'),
-  new Todo(5, 'Learn TypeScript', false, 'Learn TypeScript'),
-  new Todo(6, 'Learn Next.js', false, 'Learn Next.js'),
-  new Todo(7, 'Learn React Native', false, 'Learn React Native'),
-  new Todo(8, 'Learn Electron', false, 'Learn Electron'),
-  new Todo(9, 'Learn Webpack', false, 'Learn Webpack'),
-  new Todo(10, 'Learn Webpack Dev Server', false, 'Learn Webpack Dev Server'),
-  new Todo(11, 'Learn Babel', false, 'Learn Babel'),
-  new Todo(12, 'Learn Webpack Babel', false, 'Learn Webpack Babel'),
-  new Todo(13, 'Learn Webpack Babel Dev Server', false, 'Learn Webpack Babel Dev Server'),
-  new Todo(14, 'Learn Webpack Babel Hot Module Replacement', false, 'Learn Webpack Babel Hot Module Replacement'),
-  new Todo(15, 'Learn Webpack Babel Hot Module Replacement Dev Server', false, 'Learn Webpack Babel Hot Module Replacement Dev Server'),
-  new Todo(16, 'Learn Webpack Babel Hot Module Replacement Dev Server', false, 'Learn Webpack Babel Hot Module Replacement Dev Server'),
+  new Todo(Todo.id(), 'Learn React', true, 'Learn React'),
+  new Todo(Todo.id(), 'Learn Node', false, 'Learn Node'),
+  new Todo(Todo.id(), 'Learn MongoDB', false, 'Learn MongoDB'),
+  new Todo(Todo.id(), 'Learn GraphQL', false, 'Learn GraphQL'),
+  new Todo(Todo.id(), 'Learn TypeScript', false, 'Learn TypeScript'),
+  new Todo(Todo.id(), 'Learn Next.js', false, 'Learn Next.js'),
+  new Todo(Todo.id(), 'Learn React Native', false, 'Learn React Native'),
+  new Todo(Todo.id(), 'Learn Electron', false, 'Learn Electron'),
+  new Todo(Todo.id(), 'Learn Webpack', false, 'Learn Webpack'),
+  new Todo(Todo.id(), 'Learn Webpack Dev Server', false, 'Learn Webpack Dev Server'),
+  new Todo(Todo.id(), 'Learn Babel', false, 'Learn Babel'),
+  new Todo(Todo.id(), 'Learn Webpack Babel', false, 'Learn Webpack Babel'),
+  new Todo(Todo.id(), 'Learn Webpack Babel Dev Server', false, 'Learn Webpack Babel Dev Server'),
+  new Todo(Todo.id(), 'Learn Webpack Babel Hot Module Replacement', false, 'Learn Webpack Babel Hot Module Replacement'),
+  new Todo(Todo.id(), 'Learn Webpack Babel Hot Module Replacement Dev Server', false, 'Learn Webpack Babel Hot Module Replacement Dev Server'),
+  new Todo(Todo.id(), 'Learn Webpack Babel Hot Module Replacement Dev Server', false, 'Learn Webpack Babel Hot Module Replacement Dev Server'),
 ];
 
 //#endregion
@@ -51,7 +56,7 @@ todoRouter.post('/add', addTodo);
 
 todoRouter.delete('/delete/:id', deleteTodoById);
 
-todoRouter.put('/update/:id', updateTodoById);
+todoRouter.post('/update/:id', updateTodoById);
 
 //#endregion
 
@@ -70,12 +75,12 @@ function getAllTodos(req, res) {
  * @param {import("express").Request} res 
  */
 function getTodoById(req, res) {
-  const id = parseInt(req.params.id);
+  const id = (req.params.id);
   const todo = db.find(t => t.id === id);
   if (todo)
     res.json(todo);
   else
-    res.status(404).json({ error: 'Not found' });
+    res.status(404).json({ error: 'Todo not found' });
 }
 
 /**
@@ -83,7 +88,7 @@ function getTodoById(req, res) {
  * @param {import("express").Request} res 
  */
 function addTodo(req, res) {
-  const todo = new Todo(db.length + 1, req.body.title, req.body.completed, req.body.description);
+  const todo = new Todo(Todo.id(), req.body.title, req.body.completed, req.body.description);
   db.push(todo);
   res.json(todo);
 }
@@ -93,14 +98,18 @@ function addTodo(req, res) {
  * @param {import("express").Request} res 
  */
 function deleteTodoById(req, res) {
-  const id = parseInt(req.params.id);
+  const id = (req.params.id);
   const todo = db.find(t => t.id === id);
+
+  console.log('id', id)
+  console.log('todo', todo)
+
   if (todo) {
     db.splice(db.indexOf(todo), 1);
     res.json(todo);
   }
   else
-    res.status(404).json({ error: 'Not found' });
+    res.status(404).json({ error: 'Todo not found' });
 }
 
 /**
@@ -108,16 +117,20 @@ function deleteTodoById(req, res) {
  * @param {import("express").Request} res 
  */
 function updateTodoById(req, res) {
-  const id = parseInt(req.body.id);
+  const id = (req.params.id);
   const todo = db.find(t => t.id === id);
+
+  console.log('id', id)
+  console.log('todo', todo)
+
   if (todo) {
     todo.title = req.body.title;
     todo.completed = req.body.completed;
     todo.description = req.body.description;
-    res.json({...todo});
+    res.json({ ...todo });
   }
   else
-    res.status(404).json({ error: 'Not found' });
+    res.status(404).json({ error: 'Todo not found' });
 }
 
 //#endregion 

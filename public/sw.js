@@ -16,28 +16,28 @@ self.addEventListener('activate', (evt) => {
 // on fetch
 self.addEventListener('fetch', async (evt) => {
 
-  if (evt.request.method !== "POST") return;
+  // if (evt.request.method !== "POST") return;
 
-  async function modifyRequest() {
+  // async function modifyRequest() {
 
-    const headers = [...evt.request.headers.entries()].reduceRight((obj, [key, value]) => {
-      obj[key] = value;
-      return obj;
-    }, {})
+  //   const headers = [...evt.request.headers.entries()].reduceRight((obj, [key, value]) => {
+  //     obj[key] = value;
+  //     return obj;
+  //   }, {})
 
-    headers["X-Custom-Header"] = "Custom Value";
+  //   headers["X-Custom-Header"] = "Custom Value";
 
-    let body = await evt.request.json();
-    body = { ...body, ...{ customKey: "CustomValue" } };
+  //   let body = await evt.request.json();
+  //   body = { ...body, ...{ customKey: "CustomValue" } };
 
-    const req = new Request(evt.request, { headers: new Headers(headers), body: JSON.stringify(body) });
+  //   const req = new Request(evt.request, { headers: new Headers(headers), body: JSON.stringify(body) });
 
-    console.log('[sw:fetch]', req);
+  //   console.log('[sw:fetch]', req);
 
-    return fetch(req);
+  //   return fetch(req);
 
-  }
+  // }
 
-  evt.respondWith(modifyRequest());
+  // evt.respondWith(modifyRequest());
 
 });
